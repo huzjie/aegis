@@ -1,0 +1,14 @@
+name: fs-lockdown
+version: "1"
+description: 文件系统只读加固：禁止写 /etc /usr /bin /var/log，放行 /tmp
+target:
+  process: "*"
+rules:
+  - type: files
+    deny_write: ["/etc/**", "/usr/**", "/bin/**", "/var/log/**"]
+    deny_read: ["/etc/shadow", "/etc/ssh/**"]
+    allow: ["/tmp/**"]
+enforcement:
+  backend: apparmor
+  mode: audit
+  duration: 7d

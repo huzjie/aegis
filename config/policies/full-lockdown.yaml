@@ -1,0 +1,19 @@
+name: full-lockdown
+version: "1"
+description: 全量临时封锁：无网络、无派生、只读文件系统（最高警戒）
+target:
+  process: "*"
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8"]
+  - type: syscalls
+    deny: ["execve", "execveat", "fork", "vfork", "clone", "clone3", "connect", "socket"]
+  - type: files
+    deny_write: ["/etc/**", "/var/**", "/usr/**", "/bin/**"]
+  - type: spawn
+    deny: ["*"]
+enforcement:
+  backend: auto
+  mode: audit
+  duration: 24h

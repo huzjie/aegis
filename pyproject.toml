@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aegis-shield"
+version = "1.0.0"
+description = "Zero-dependency Linux runtime shielding engine (declarative policy -> seccomp/eBPF/AppArmor/nftables artifacts)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "AI Daily Agent" }]
+keywords = ["ebpf", "seccomp", "runtime-security", "shirudo", "apparmor", "nftables", "virtual-patching"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+    "Topic :: System :: Systems Administration",
+]
+dependencies = []
+
+[project.optional-dependencies]
+yaml = ["PyYAML>=5.4"]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/huzjie/aegis"
+Documentation = "https://github.com/huzjie/aegis/tree/main/docs"
+
+[project.scripts]
+aegis = "aegis.cli:main"
+
+[tool.setuptools]
+packages = ["aegis", "aegis.backend", "aegis.policy", "aegis.signature",
+            "aegis.nlgen", "aegis.gateway", "aegis.ebpf", "aegis.metrics",
+            "aegis.audit", "aegis.utils"]
+
+[tool.setuptools.package-data]
+"aegis.signature" = ["db/*.yaml", "db/*.yml"]
+"aegis.ebpf" = ["templates/*"]

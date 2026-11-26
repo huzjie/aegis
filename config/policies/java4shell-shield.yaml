@@ -1,0 +1,18 @@
+name: java4shell-shield
+version: "1"
+description: 阻断 Java4Shell (CVE-2026-114938) Base64 类加载绕过与外联
+target:
+  process: java
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  - type: spawn
+    deny: ["*"]
+  - type: files
+    deny_write: ["/tmp/**", "/var/tmp/**"]
+    allow: ["/tmp/legit-app/**"]
+enforcement:
+  backend: auto
+  mode: audit
+  duration: 7d

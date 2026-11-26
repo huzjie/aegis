@@ -1,0 +1,16 @@
+name: log4shell-shield
+version: "1"
+description: 阻断 Log4Shell (CVE-2021-44228) JNDI 外联与子进程派生，补丁落地后退役
+target:
+  process: java
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    ports_deny: [389, 636, 1099, 1389]
+  - type: spawn
+    deny: ["*"]
+enforcement:
+  backend: auto
+  mode: audit
+  duration: 7d

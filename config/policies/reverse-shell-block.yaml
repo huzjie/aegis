@@ -1,0 +1,14 @@
+name: reverse-shell-block
+version: "1"
+description: 阻断反弹 shell 常见出站端口（仅放行业务所需内网）
+target:
+  process: "*"
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    ports_deny: [4444, 5555, 6666, 7777, 8080, 9001, 1337, 31337]
+enforcement:
+  backend: nftables
+  mode: audit
+  duration: 7d

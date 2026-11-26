@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis
+  namespace: aegis
+  labels:
+    app: aegis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aegis
+  template:
+    metadata:
+      labels:
+        app: aegis
+    spec:
+      serviceAccountName: aegis
+      containers:
+        - name: aegis
+          image: aegis:latest
+          imagePullPolicy: IfNotPresent
+          args: ["serve", "--port", "8700"]
+          ports:
+            - containerPort: 8700
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8700
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8700
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi

@@ -1,0 +1,19 @@
+id: spring4shell
+name: Spring4Shell RCE
+cve: CVE-2022-22965
+description: Spring Framework data-binding allows writing files under WEB-INF via crafted request parameters.
+severity: high
+process: ["java"]
+argv_patterns: ["spring-boot", "tomcat"]
+cmdline_patterns: ["-Dserver.port"]
+ports: [8080, 8443, 80, 443]
+recommended_shield:
+  process: java
+  rules:
+    - type: files
+      deny_write: ["**/WEB-INF/**", "**/webapps/**"]
+    - type: syscalls
+      deny: ["execve", "execveat"]
+  enforcement:
+    backend: apparmor
+    duration: 7d

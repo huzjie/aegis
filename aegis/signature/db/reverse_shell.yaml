@@ -1,0 +1,19 @@
+id: reverse-shell
+name: Reverse shell back-connect
+cve: T1059
+description: A compromised process opening outbound connections to uncommon ports suggests a reverse shell.
+severity: high
+process: ["sh", "bash", "python", "nc", "ncat", "perl", "ruby", "php", "node"]
+argv_patterns: ["/dev/tcp/", "-e /bin/", "exec 5<>", "socket"]
+cmdline_patterns: []
+ports: [4444, 5555, 9001, 31337]
+recommended_shield:
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: auto
+    duration: 3d

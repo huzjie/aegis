@@ -1,0 +1,19 @@
+id: ghostcat
+name: Apache Tomcat Ghostcat AJP
+cve: CVE-2020-1938
+description: Tomcat AJP 连接器未正确校验，经 8009 端口可读取任意文件乃至代码执行。
+severity: high
+process: ["java"]
+argv_patterns: ["tomcat", "catalina", "ajp"]
+cmdline_patterns: ["catalina"]
+ports: [8009]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ports_deny: [8009]
+  enforcement:
+    backend: nftables
+    duration: 7d

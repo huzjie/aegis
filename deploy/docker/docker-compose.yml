@@ -1,0 +1,13 @@
+services:
+  aegis:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    image: aegis:latest
+    container_name: aegis
+    ports:
+      - "8700:8700"
+    # 内核级强制需去掉注释并确保 Linux 主机 + 特权
+    # privileged: true
+    # cap_add: [BPF, NET_ADMIN, SYS_ADMIN]
+    restart: unless-stopped

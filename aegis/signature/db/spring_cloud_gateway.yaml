@@ -1,0 +1,20 @@
+id: spring-cloud-gateway
+name: Spring Cloud Gateway RCE
+cve: CVE-2022-22947
+description: Spring Cloud Gateway 经 SpEL 表达式注入实现远程代码执行。
+severity: high
+process: ["java"]
+argv_patterns: ["gateway", "spel", "java.lang"]
+cmdline_patterns: ["gateway"]
+ports: [8080, 8443]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: auto
+    duration: 7d

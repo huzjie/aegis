@@ -1,0 +1,17 @@
+id: dirtypipe
+name: Dirty Pipe privilege escalation
+cve: CVE-2022-0847
+description: A Linux kernel flaw lets unprivileged processes overwrite read-only file contents, enabling privilege escalation.
+severity: critical
+process: []
+argv_patterns: []
+cmdline_patterns: []
+ports: []
+kernel_lt: "5.16.11"
+recommended_shield:
+  rules:
+    - type: files
+      deny_write: ["/etc/**", "/usr/**", "/bin/**", "/lib/**"]
+  enforcement:
+    backend: apparmor
+    duration: 1d

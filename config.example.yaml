@@ -1,0 +1,19 @@
+# aegis 示例护盾策略（供 `python -m aegis doctor` / `compile --policy` 使用）
+# 更多可复用样例见 config/policies/
+
+name: example-shield
+version: "1"
+description: 临时阻断 java 进程的非私网外联与子进程派生（示例）
+target:
+  process: java
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    ports_deny: [389, 636, 1099, 1389]
+  - type: spawn
+    deny: ["*"]
+enforcement:
+  backend: auto
+  mode: audit
+  duration: 7d

@@ -1,0 +1,41 @@
+# 可选：如需在每个节点做内核级强制（eBPF/seccomp/nftables），
+# 用 DaemonSet + 特权容器（生产环境请自行评估风险）。
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: aegis-enforcer
+  namespace: aegis
+  labels:
+    app: aegis-enforcer
+spec:
+  selector:
+    matchLabels:
+      app: aegis-enforcer
+  template:
+    metadata:
+      labels:
+        app: aegis-enforcer
+    spec:
+      hostPID: true
+      containers:
+        - name: aegis
+          image: aegis:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          args: ["serve", "--port", "8700"]
+          ports:
+            - containerPort: 8700
+          volumeMounts:
+            - name: bpffs
+              mountPath: /sys/fs/bpf
+            - name: libmodules
+              mountPath: /lib/modules
+              readOnly: true
+      volumes:
+        - name: bpffs
+          hostPath:
+            path: /sys/fs/bpf
+        - name: libmodules
+          hostPath:
+            path: /lib/modules

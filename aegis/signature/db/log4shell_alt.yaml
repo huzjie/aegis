@@ -1,0 +1,19 @@
+id: java4shell
+name: Java4Shell JDK RCE
+cve: CVE-2022-42889
+description: Apache Commons Text string interpolation (StringSubstitutor) allows RCE via crafted ${script:...} / ${url:...} expressions.
+severity: high
+process: ["java"]
+argv_patterns: ["\\$\\{script:", "\\$\\{url:", "\\$\\{dns:"]
+cmdline_patterns: []
+ports: [1389, 1099, 389]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8"]
+      ports_deny: [1389, 1099, 389]
+  enforcement:
+    backend: nftables
+    duration: 7d

@@ -1,0 +1,20 @@
+id: fastjson
+name: Fastjson autotype RCE
+cve: CVE-2017-18349
+description: Fastjson 未开启 autotype 校验时，攻击者可经 JNDI/RMI 反序列化触发远程代码执行。
+severity: critical
+process: ["java"]
+argv_patterns: ["jndi:", "rmi://", "ldap://", "@type"]
+ports: [1389, 1099, 389, 636]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ports_deny: [1389, 1099, 389, 636]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: nftables
+    duration: 7d

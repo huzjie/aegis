@@ -1,0 +1,14 @@
+name: dns-exfil-block
+version: "1"
+description: 阻断 DNS 外带：仅放行内网 DNS 服务器 10.0.0.53
+target:
+  process: "*"
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["10.0.0.53/32"]
+    ports_deny: [53]
+enforcement:
+  backend: nftables
+  mode: audit
+  duration: 7d

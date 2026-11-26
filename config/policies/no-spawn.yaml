@@ -1,0 +1,14 @@
+name: no-spawn
+version: "1"
+description: 禁止目标进程派生任何子进程（阻断命令执行型利用）
+target:
+  process: java
+rules:
+  - type: spawn
+    deny: ["*"]
+  - type: syscalls
+    deny: ["execve", "execveat", "fork", "vfork", "clone", "clone3"]
+enforcement:
+  backend: seccomp
+  mode: audit
+  duration: 7d

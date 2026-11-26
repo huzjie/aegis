@@ -1,0 +1,14 @@
+name: ransomware-guard
+version: "1"
+description: 勒索软件防护：阻断批量文件加密行为（大量写 + 重命名 + 删除）
+target:
+  process: "*"
+rules:
+  - type: files
+    deny_write: ["/var/**", "/home/**", "/opt/**", "/srv/**"]
+  - type: syscalls
+    deny: ["renameat2"]
+enforcement:
+  backend: apparmor
+  mode: audit
+  duration: 7d

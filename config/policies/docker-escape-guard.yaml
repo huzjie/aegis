@@ -1,0 +1,15 @@
+name: docker-escape-guard
+version: "1"
+description: 容器逃逸防护：禁止容器内进程触碰 /proc、/sys 关键路径与敏感 syscall
+target:
+  container: "*"
+rules:
+  - type: files
+    deny_read: ["/proc/kcore", "/proc/sys/kernel/core_pattern", "/sys/kernel/**"]
+    deny_write: ["/proc/sys/**", "/sys/kernel/**"]
+  - type: syscalls
+    deny: ["mount", "umount2", "bpf", "ptrace", "perf_event_open"]
+enforcement:
+  backend: auto
+  mode: audit
+  duration: 7d

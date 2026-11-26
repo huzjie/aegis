@@ -1,0 +1,21 @@
+id: weblogic
+name: Oracle WebLogic WLS RCE
+cve: CVE-2017-10271
+description: WebLogic WLS 组件 XMLDecoder 反序列化漏洞，未授权即可远程代码执行。
+severity: critical
+process: ["java"]
+argv_patterns: ["weblogic", "wls"]
+cmdline_patterns: ["weblogic"]
+ports: [7001, 7002]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ports_deny: [7001, 7002]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: nftables
+    duration: 7d

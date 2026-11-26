@@ -1,0 +1,20 @@
+id: struts2
+name: Apache Struts2 OGNL RCE
+cve: CVE-2017-5638
+description: Struts2 Jakarta Multipart 解析器未校验 Content-Type，经 OGNL 注入执行任意命令。
+severity: critical
+process: ["java"]
+argv_patterns: ["%{", "ognl", "struts"]
+cmdline_patterns: ["struts", "content-type"]
+ports: [80, 8080, 8443]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: auto
+    duration: 7d

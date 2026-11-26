@@ -1,0 +1,18 @@
+id: phpunit
+name: PHPUnit RCE
+cve: CVE-2017-9841
+description: PHPUnit 版本过低时，经 eval-stdin.php 端点执行任意 PHP 代码。
+severity: high
+process: ["php", "php-fpm"]
+argv_patterns: ["phpunit", "eval-stdin"]
+cmdline_patterns: ["phpunit"]
+ports: [80, 443, 8080]
+recommended_shield:
+  process: php
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  enforcement:
+    backend: nftables
+    duration: 7d

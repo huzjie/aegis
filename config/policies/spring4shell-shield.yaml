@@ -1,0 +1,15 @@
+name: spring4shell-shield
+version: "1"
+description: 阻断 Spring4Shell (CVE-2022-22965) 任意文件写与外联
+target:
+  process: java
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  - type: files
+    deny_write: ["/usr/local/tomcat/**", "/opt/**", "/etc/**"]
+enforcement:
+  backend: auto
+  mode: audit
+  duration: 7d

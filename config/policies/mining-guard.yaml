@@ -1,0 +1,16 @@
+name: mining-guard
+version: "1"
+description: 挖矿防护：阻断非业务进程的矿池外联端口
+target:
+  process: "*"
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    ports_deny: [3333, 4444, 5555, 7777, 14444, 8080]
+  - type: spawn
+    deny: ["*"]
+enforcement:
+  backend: nftables
+  mode: audit
+  duration: 7d

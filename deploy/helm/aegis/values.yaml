@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: aegis
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8700
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# 内核级强制需特权（生产环境谨慎开启）
+privileged: false
+
+config:
+  mode: audit            # audit | enforce
+  backend: auto
+  duration: 7d

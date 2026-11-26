@@ -1,0 +1,24 @@
+id: log4shell
+name: Log4Shell JNDI injection
+cve: CVE-2021-44228
+description: Log4j2 JNDI lookups allow remote code execution via attacker-controlled LDAP/RMI/JNDI strings.
+severity: critical
+process: ["java"]
+argv_patterns: ["jndi:", "ldap://", "rmi://", "dns://", "\\$\\{[^}]*jndi"]
+cmdline_patterns: []
+ports: [389, 636, 1099, 1389]
+recommended_shield:
+  process: java
+  network:
+    deny: ["*"]
+    allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ports_deny: [389, 636, 1099, 1389]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: nftables
+    duration: 7d

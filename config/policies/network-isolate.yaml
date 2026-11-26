@@ -1,0 +1,13 @@
+name: network-isolate
+version: "1"
+description: 全网隔离，仅保留 loopback（用于被攻陷主机的临时断网）
+target:
+  process: "*"
+rules:
+  - type: network
+    deny: ["*"]
+    allow: ["127.0.0.0/8"]
+enforcement:
+  backend: nftables
+  mode: audit
+  duration: 24h

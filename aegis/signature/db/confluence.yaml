@@ -1,0 +1,21 @@
+id: confluence
+name: Atlassian Confluence OGNL RCE
+cve: CVE-2021-26084
+description: Confluence OGNL 注入，未授权远程代码执行。
+severity: critical
+process: ["java"]
+argv_patterns: ["confluence", "ognl"]
+cmdline_patterns: ["confluence"]
+ports: [8090]
+recommended_shield:
+  process: java
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      ports_deny: [8090]
+    - type: spawn
+      deny: ["*"]
+  enforcement:
+    backend: nftables
+    duration: 7d

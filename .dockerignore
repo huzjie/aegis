@@ -1,0 +1,13 @@
+.git
+__pycache__
+*.pyc
+*.egg-info
+build
+dist
+.venv
+venv
+tests
+examples
+docs
+_deploy_tmp
+*.bpf.o

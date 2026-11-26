@@ -1,0 +1,16 @@
+[Unit]
+Description=aegis Linux runtime shielding engine (control plane)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/aegis serve --port 8700
+Restart=on-failure
+RestartSec=5
+User=aegis
+Group=aegis
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

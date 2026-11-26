@@ -1,0 +1,18 @@
+id: dns-exfil
+name: DNS data exfiltration
+cve: T1048.003
+description: High-entropy or oversized DNS queries to uncommon destinations indicate data exfiltration over DNS.
+severity: medium
+process: []
+argv_patterns: []
+cmdline_patterns: []
+ports: [53]
+recommended_shield:
+  rules:
+    - type: network
+      deny: ["*"]
+      allow: ["127.0.0.0/8", "10.0.0.0/8"]
+      ports_deny: [53]
+  enforcement:
+    backend: nftables
+    duration: 3d
